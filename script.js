@@ -1,147 +1,49 @@
-// JavaScript for Es Käseblättsche Website
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenu.classList.toggle('hidden');
+}
 
+// Newsletter Form Handling
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    mobileMenuBtn.addEventListener('click', function() {
-        mobileMenu.classList.toggle('hidden');
-        mobileMenu.classList.toggle('show');
-    });
-    
-    // Newsletter Form Handling
-    const newsletterForms = document.querySelectorAll('#newsletter-form, form');
+    // Newsletter forms
+    const newsletterForms = document.querySelectorAll('form');
     
     newsletterForms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            handleNewsletterSignup(this);
-        });
-    });
-    
-    function handleNewsletterSignup(form) {
-        const emailInput = form.querySelector('input[type="email"]');
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const email = emailInput.value;
-        
-        // Validate email
-        if (!isValidEmail(email)) {
-            showMessage(form, 'Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'error');
-            return;
-        }
-        
-        // Show loading state
-        submitBtn.classList.add('btn-loading');
-        submitBtn.disabled = true;
-        
-        // Simulate API call
-        setTimeout(() => {
-            // Reset button
-            submitBtn.classList.remove('btn-loading');
-            submitBtn.disabled = false;
             
-            // Show success message
-            showMessage(form, '✅ Erfolgreich angemeldet! Bestätigungsmail wurde versendet.', 'success');
-            emailInput.value = '';
-        }, 2000);
-    }
-    
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-    
-    function showMessage(form, message, type) {
-        // Remove existing messages
-        const existingMessages = form.querySelectorAll('.success-message, .error-message');
-        existingMessages.forEach(msg => msg.remove());
-        
-        // Create new message
-        const messageDiv = document.createElement('div');
-        messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
-        messageDiv.textContent = message;
-        
-        form.appendChild(messageDiv);
-        
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            messageDiv.remove();
-        }, 5000);
-    }
-    
-    // Accordion Functionality
-    const accordionToggles = document.querySelectorAll('.accordion-toggle');
-    
-    accordionToggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const content = this.nextElementSibling;
-            const isActive = content.classList.contains('active');
+            const emailInput = form.querySelector('input[type="email"]');
+            const email = emailInput.value;
             
-            // Close all accordions
-            document.querySelectorAll('.accordion-content').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.accordion-toggle').forEach(btn => {
-                btn.textContent = 'Mehr lesen ↓';
-            });
-            
-            // Toggle current accordion
-            if (!isActive) {
-                content.classList.add('active');
-                this.textContent = 'Weniger anzeigen ↑';
+            if (validateEmail(email)) {
+                // Simulate newsletter signup
+                showNotification('Erfolgreich angemeldet! Sie erhalten in Kürze eine Bestätigungsmail.', 'success');
+                emailInput.value = '';
+            } else {
+                showNotification('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'error');
             }
         });
     });
     
-    // Event Filter Functionality
-    const filterButtons = document.querySelectorAll('.event-filter');
-    const eventItems = document.querySelectorAll('.event-item');
-    
+    // Event filter buttons
+    const filterButtons = document.querySelectorAll('section button');
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            
-            // Update active button
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter events
-            eventItems.forEach(item => {
-                const category = item.getAttribute('data-category');
-                
-                if (filter === 'all' || category === filter) {
-                    item.classList.remove('hidden');
-                    item.classList.add('show');
-                } else {
-                    item.classList.add('hidden');
-                    item.classList.remove('show');
-                }
+            // Remove active class from all buttons
+            const siblingButtons = this.parentElement.querySelectorAll('button');
+            siblingButtons.forEach(btn => {
+                btn.classList.remove('bg-blue-medium', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
             });
+            
+            // Add active class to clicked button
+            this.classList.remove('bg-gray-200', 'text-gray-700');
+            this.classList.add('bg-blue-medium', 'text-white');
+            
+            // Here you would typically filter events based on the button text
+            console.log('Filter events by:', this.textContent);
         });
-    });
-    
-    // Scroll Animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-            }
-        });
-    }, observerOptions);
-    
-    // Add scroll animation class to elements
-    const animateElements = document.querySelectorAll('section, article, .event-item');
-    animateElements.forEach(el => {
-        el.classList.add('scroll-animate');
-        observer.observe(el);
     });
     
     // Smooth scrolling for anchor links
@@ -158,105 +60,155 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Partner Logo Click Handling
-    const partnerLogos = document.querySelectorAll('.partner-carousel .flex-shrink-0');
-    partnerLogos.forEach(logo => {
-        logo.addEventListener('click', function() {
-            const partnerName = this.querySelector('div').textContent;
-            alert(`Mehr Informationen über ${partnerName} finden Sie bald hier!`);
-        });
-        
-        // Add hover effect
-        logo.classList.add('hover-lift');
-        logo.style.cursor = 'pointer';
-    });
+    // Animate elements on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    // Auto-hide mobile menu on window resize
-    window.addEventListener('resize', function() {
-        if (window.innerWidth >= 768) {
-            mobileMenu.classList.add('hidden');
-            mobileMenu.classList.remove('show');
-        }
-    });
-    
-    // Initialize animations on load
-    setTimeout(() => {
-        const heroSection = document.querySelector('section');
-        if (heroSection) {
-            heroSection.classList.add('in-view');
-        }
-    }, 100);
-    
-    // Add loading states to all buttons
-    const buttons = document.querySelectorAll('button:not(.accordion-toggle):not(.event-filter):not(#mobile-menu-btn)');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            if (this.getAttribute('type') !== 'submit') {
-                // Add loading state for demo
-                this.classList.add('btn-loading');
-                this.disabled = true;
-                
-                setTimeout(() => {
-                    this.classList.remove('btn-loading');
-                    this.disabled = false;
-                }, 1500);
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fadeInUp');
             }
         });
+    }, observerOptions);
+    
+    // Observe all article and section elements
+    document.querySelectorAll('article, section > div').forEach(el => {
+        observer.observe(el);
     });
-    
-    // Easter egg: Konami code
-    let konamiCode = [];
-    const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Up, Up, Down, Down, Left, Right, Left, Right, B, A
-    
-    document.addEventListener('keydown', function(e) {
-        konamiCode.push(e.keyCode);
-        
-        if (konamiCode.length > konamiSequence.length) {
-            konamiCode.shift();
-        }
-        
-        if (konamiCode.length === konamiSequence.length &&
-            konamiCode.every((code, index) => code === konamiSequence[index])) {
-            
-            // Easter egg activation
-            document.body.style.filter = 'hue-rotate(180deg)';
-            alert('🎉 Sie haben das Käseblättsche Easter Egg gefunden! 🧀');
-            
-            setTimeout(() => {
-                document.body.style.filter = 'none';
-            }, 5000);
-            
-            konamiCode = [];
-        }
-    });
-    
-    // Console message for developers
-    console.log(`
-    🧀 Es Käseblättsche Website
-    Entwickelt für die lokale Gemeinschaft
-    Version: 1.0.0
-    
-    Interessiert an der Entwicklung? 
-    Kontaktieren Sie uns über die Website!
-    `);
 });
 
-// Utility functions
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
+// Email validation function
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
 }
 
-// Performance optimization for scroll events
-const debouncedScroll = debounce(() => {
-    // Handle scroll-based animations here if needed
-}, 100);
+// Notification system
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-sm transform transition-all duration-300 translate-x-full`;
+    
+    // Set colors based on type
+    if (type === 'success') {
+        notification.classList.add('bg-green-500', 'text-white');
+    } else if (type === 'error') {
+        notification.classList.add('bg-red-500', 'text-white');
+    } else {
+        notification.classList.add('bg-blue-500', 'text-white');
+    }
+    
+    notification.innerHTML = `
+        <div class="flex items-center justify-between">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 300);
+    }, 5000);
+}
 
-window.addEventListener('scroll', debouncedScroll);
+// Partner logo carousel
+function initPartnerCarousel() {
+    const carousel = document.querySelector('.flex.space-x-8.animate-pulse');
+    if (carousel) {
+        // Remove animate-pulse and add custom animation
+        carousel.classList.remove('animate-pulse');
+        carousel.classList.add('animate-scroll');
+        
+        // Clone elements for infinite scroll effect
+        const logos = carousel.children;
+        const logosArray = Array.from(logos);
+        
+        logosArray.forEach(logo => {
+            const clone = logo.cloneNode(true);
+            carousel.appendChild(clone);
+        });
+    }
+}
+
+// Initialize carousel when page loads
+document.addEventListener('DOMContentLoaded', initPartnerCarousel);
+
+// Add custom CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+    
+    .animate-fadeInUp {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    .animate-scroll {
+        animation: scroll 20s linear infinite;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: #1e3a8a;
+    }
+    
+    /* Smooth hover effects */
+    .hover\\:scale-105:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Focus styles for accessibility */
+    button:focus, input:focus, a:focus {
+        outline: 2px solid #3b82f6;
+        outline-offset: 2px;
+    }
+`;
+
+document.head.appendChild(style);
