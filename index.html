@@ -1,6 +1,19 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
+<html lang=                <!-- Logo -->
+                <div class="flex items-center">
+                    <div class="flex items-center space-x-2">
+                        <!-- Blue squares representing the logo -->
+                        <div class="flex space-x-1">
+                            <div class="w-4 h-8 bg-blue-dark rounded-sm"></div>
+                            <div class="w-6 h-6 bg-blue-medium rounded-sm mt-1"></div>
+                            <div class="w-3 h-4 bg-blue-light rounded-sm mt-2"></div>
+                        </div>
+                        <!-- Text -->
+                        <div class="text-2xl font-bold text-blue-dark">
+                            es K<span class="text-blue-medium">ä</span>sebl<span class="text-blue-light">ä</span>ttsche
+                        </div>
+                    </div>
+                </div><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>es Käseblättsche - Lokalnachrichten aus Quierschied, Göttelborn & Fischbach-Camphausen</title>
@@ -27,36 +40,55 @@
             <div class="flex items-center justify-between">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiBmaWxsPSJ3aGl0ZSIvPgo8dGV4dCB4PSIxMCIgeT0iNDAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMxZTNhOGEiPmVzIEvDpHNlYmzDpHR0c2NoZTwvdGV4dD4KPC9zdmc+" 
-                         alt="es Käseblättsche" 
-                         class="h-12 w-auto">
+                    <div class="flex items-center space-x-2">
+                        <!-- Blue squares representing the logo -->
+                        <div class="flex space-x-1">
+                            <div class="w-4 h-8 bg-blue-dark rounded-sm"></div>
+                            <div class="w-6 h-6 bg-blue-medium rounded-sm mt-1"></div>
+                            <div class="w-3 h-4 bg-blue-light rounded-sm mt-2"></div>
+                        </div>
+                        <!-- Text -->
+                        <div class="text-2xl font-bold text-blue-dark">
+                            es K<span class="text-blue-medium">ä</span>sebl<span class="text-blue-light">ä</span>ttsche
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Navigation Desktop -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Startseite</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Aktuelles</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Archiv</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Veranstaltungen</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Fotogalerien</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Kontakt</a>
+                <!-- Navigation Desktop - Center -->
+                <nav class="hidden lg:flex space-x-8 flex-1 justify-center">
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Startseite</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Aktuelles</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Archiv</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Veranstaltungen</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Fotogalerien</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Kontakt</a>
                 </nav>
                 
+                <!-- CTA Button Desktop -->
+                <div class="hidden lg:flex">
+                    <button class="bg-blue-medium hover:bg-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                        Newsletter abonnieren
+                    </button>
+                </div>
+                
                 <!-- Mobile Menu Button -->
-                <button class="md:hidden text-blue-dark" onclick="toggleMobileMenu()">
+                <button class="lg:hidden text-blue-dark" onclick="toggleMobileMenu()">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
             
             <!-- Mobile Navigation -->
-            <nav id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+            <nav id="mobileMenu" class="hidden lg:hidden mt-4 pb-4">
                 <div class="flex flex-col space-y-3">
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Startseite</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Aktuelles</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Archiv</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Veranstaltungen</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Fotogalerien</a>
-                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors">Kontakt</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Startseite</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Aktuelles</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Archiv</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Veranstaltungen</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Fotogalerien</a>
+                    <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Kontakt</a>
+                    <button class="bg-blue-medium hover:bg-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-colors text-left mt-4">
+                        Newsletter abonnieren
+                    </button>
                 </div>
             </nav>
         </div>
