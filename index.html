@@ -33,20 +33,20 @@
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <div class="flex items-center">
+                <a href="#" class="flex items-center group">
                     <div class="flex items-center space-x-2">
                         <!-- Blue squares representing the logo -->
                         <div class="flex space-x-1">
-                            <div class="w-4 h-8 bg-blue-dark rounded-sm"></div>
-                            <div class="w-6 h-6 bg-blue-medium rounded-sm mt-1"></div>
-                            <div class="w-3 h-4 bg-blue-light rounded-sm mt-2"></div>
+                            <div class="w-4 h-8 bg-blue-dark rounded-sm transition-transform duration-300 group-hover:transform group-hover:scale-105"></div>
+                            <div class="w-6 h-6 bg-blue-medium rounded-sm mt-1 transition-transform duration-300 group-hover:transform group-hover:scale-105 delay-75"></div>
+                            <div class="w-3 h-4 bg-blue-light rounded-sm mt-2 transition-transform duration-300 group-hover:transform group-hover:scale-105 delay-150"></div>
                         </div>
                         <!-- Text -->
                         <div class="text-2xl font-bold text-blue-dark">
                             es K<span class="text-blue-medium">ä</span>sebl<span class="text-blue-light">ä</span>ttsche
                         </div>
                     </div>
-                </div>
+                </a>
                 
                 <!-- Navigation Desktop - Center -->
                 <nav class="hidden lg:flex space-x-8 flex-1 justify-center">
@@ -60,10 +60,10 @@
                 
                 <!-- CTA Button Desktop -->
                 <div class="hidden lg:flex">
-                    <button class="bg-blue-medium hover:bg-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden group">
+                    <button class="bg-gradient-to-r from-blue-medium to-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden group shadow-md hover:shadow-lg hover:shadow-blue-medium/30">
                         <span class="relative z-10">Newsletter abonnieren</span>
-                        <span class="absolute inset-0 bg-blue-dark opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                        <span class="absolute -inset-x-10 bottom-0 h-10 bg-blue-light opacity-0 group-hover:opacity-30 blur-lg transform translate-y-full group-hover:translate-y-0 transition-all duration-500"></span>
+                        <span class="absolute inset-0 bg-gradient-to-r from-blue-dark via-blue-medium to-blue-dark bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-700"></span>
+                        <span class="absolute inset-y-0 right-0 w-1/4 bg-white/20 -skew-x-12 transform translate-x-full group-hover:translate-x-[-600%] transition-transform duration-1000 ease-in-out"></span>
                     </button>
                 </div>
                 
@@ -82,8 +82,9 @@
                     <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Veranstaltungen</a>
                     <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Fotogalerien</a>
                     <a href="#" class="text-blue-dark hover:text-blue-medium transition-colors font-medium">Kontakt</a>
-                    <button class="bg-blue-medium hover:bg-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-colors text-left mt-4">
-                        Newsletter abonnieren
+                    <button class="bg-gradient-to-r from-blue-medium to-blue-dark text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 text-left mt-4 relative overflow-hidden group">
+                        <span class="relative z-10">Newsletter abonnieren</span>
+                        <span class="absolute inset-0 bg-gradient-to-br from-blue-light via-blue-medium to-blue-dark opacity-0 group-hover:opacity-100 transition-all duration-500"></span>
                     </button>
                 </div>
             </nav>
@@ -118,10 +119,11 @@
                                    placeholder="Ihre E-Mail-Adresse" 
                                    class="flex-1 px-4 py-3 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-medium focus:border-transparent focus:shadow-lg focus:shadow-blue-medium/20 transition-all duration-300">
                             <button type="submit" 
-                                    class="bg-blue-medium px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap text-white shadow-md relative overflow-hidden group">
+                                    class="bg-gradient-to-r from-blue-medium via-blue-light to-blue-medium px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap text-white shadow-md relative overflow-hidden group hover:shadow-xl hover:shadow-blue-light/20">
                                 <span class="relative z-10">Jetzt anmelden</span>
-                                <span class="absolute inset-0 bg-gradient-to-r from-blue-medium to-blue-dark opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                                <span class="absolute inset-0 bg-blue-light/20 opacity-0 group-hover:opacity-100 blur-md transform scale-0 group-hover:scale-150 transition-all duration-700 ease-out"></span>
+                                <span class="absolute inset-0 bg-gradient-to-r from-blue-dark via-blue-medium to-blue-dark bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-700"></span>
+                                <span class="absolute h-20 w-20 rounded-full bg-blue-light/40 -top-10 -left-10 opacity-0 group-hover:opacity-100 blur-xl group-hover:animate-pulse"></span>
+                                <span class="absolute h-20 w-20 rounded-full bg-blue-medium/40 -bottom-10 -right-10 opacity-0 group-hover:opacity-100 blur-xl group-hover:animate-pulse delay-150"></span>
                             </button>
                         </form>
                         <p class="text-sm text-gray-600 mt-3">
@@ -134,24 +136,25 @@
                     <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-light rounded-full opacity-30 blur-xl"></div>
                     <div class="absolute -left-4 -bottom-4 w-32 h-32 bg-blue-medium rounded-full opacity-30 blur-xl"></div>
                     
-                    <div class="bg-white rounded-lg shadow-2xl p-6 transform rotate-1 transition-transform duration-300 relative z-10 hover:shadow-blue-light/30">
-                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 h-64 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-200">
-                            <i class="fas fa-newspaper text-6xl text-blue-medium opacity-50"></i>
-                            <div class="absolute bottom-0 left-0 right-0 bg-blue-medium/10 p-3 backdrop-blur-sm">
+                    <div class="bg-white rounded-lg shadow-2xl p-6 transform rotate-1 hover:rotate-0 transition-transform duration-500 relative z-10 hover:shadow-blue-light/30 group cursor-pointer">
+                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 h-64 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden border border-gray-200 transition-all duration-500 group-hover:border-blue-light">
+                            <i class="fas fa-newspaper text-6xl text-blue-medium opacity-50 transition-all duration-500 group-hover:scale-110 group-hover:opacity-70"></i>
+                            <div class="absolute bottom-0 left-0 right-0 bg-blue-medium/10 p-3 backdrop-blur-sm transition-all duration-500 group-hover:bg-blue-medium/20">
                                 <div class="flex items-center text-blue-dark">
-                                    <i class="fas fa-star text-blue-medium mr-2"></i>
+                                    <i class="fas fa-star text-blue-medium mr-2 group-hover:animate-pulse"></i>
                                     <span class="font-medium">Ausgabe 07/2025</span>
                                 </div>
                             </div>
                         </div>
-                        <h3 class="text-xl font-bold text-blue-dark mb-2">Aktuelle Ausgabe</h3>
+                        <h3 class="text-xl font-bold text-blue-dark mb-2 transition-all duration-300 group-hover:translate-x-1">Aktuelle Ausgabe</h3>
                         <p class="text-gray-600 mb-3">Juli 2025 - Jetzt verfügbar</p>
-                        <button class="w-full mt-2 bg-blue-medium text-white px-4 py-3 rounded-lg transition-all duration-300 font-semibold flex items-center justify-center relative overflow-hidden group">
+                        <button class="w-full mt-2 bg-gradient-to-br from-blue-medium to-blue-dark text-white px-4 py-3 rounded-lg transition-all duration-300 font-semibold flex items-center justify-center relative overflow-hidden group shadow hover:shadow-xl hover:shadow-blue-dark/20">
                             <span class="relative z-10 flex items-center">
                                 <i class="fas fa-eye mr-2 group-hover:animate-pulse"></i> Ausgabe ansehen
                             </span>
                             <span class="absolute inset-0 bg-gradient-to-r from-blue-dark via-blue-medium to-blue-dark bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-700"></span>
                             <span class="absolute -inset-y-10 left-0 w-10 bg-white/20 skew-x-12 transform -translate-x-full group-hover:translate-x-[600%] transition-transform duration-1000 ease-in-out"></span>
+                            <span class="absolute h-full w-full bg-blue-light/20 opacity-0 group-hover:opacity-100 animate-ping rounded-lg duration-1000 delay-300"></span>
                         </button>
                     </div>
                 </div>
@@ -307,10 +310,11 @@
             </div>
             
             <div class="text-center">
-                <button class="bg-blue-medium text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden group">
+                <button class="bg-gradient-to-tr from-blue-dark via-blue-medium to-blue-dark text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden group shadow-lg shadow-blue-dark/5 hover:shadow-blue-medium/20">
                     <span class="relative z-10">Alle Termine anzeigen</span>
-                    <span class="absolute inset-0 bg-blue-dark opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    <span class="absolute -inset-x-10 bottom-0 h-10 bg-blue-light opacity-0 group-hover:opacity-30 blur-lg transform translate-y-full group-hover:translate-y-0 transition-all duration-500"></span>
+                    <span class="absolute inset-0 bg-gradient-to-r from-blue-medium to-blue-dark bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-700"></span>
+                    <span class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+                    <span class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-blue-light/30 to-transparent opacity-0 group-hover:opacity-100 blur-md transition-all duration-300 delay-100"></span>
                 </button>
             </div>
         </div>
@@ -361,8 +365,10 @@
                                placeholder="E-Mail-Adresse" 
                                class="w-full px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-light">
                         <button type="submit" 
-                                class="w-full bg-blue-medium hover:bg-blue-light text-white px-4 py-2 rounded-lg transition-colors">
-                            Anmelden
+                                class="w-full bg-gradient-to-r from-blue-medium to-blue-dark text-white px-4 py-2 rounded-lg transition-all duration-300 relative overflow-hidden group shadow hover:shadow-lg hover:shadow-blue-dark/30">
+                            <span class="relative z-10">Anmelden</span>
+                            <span class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-light/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform -translate-x-full group-hover:translate-x-0"></span>
+                            <span class="absolute bottom-0 right-0 w-full h-0 bg-blue-light/30 group-hover:h-full transition-all duration-300 opacity-0 group-hover:opacity-100"></span>
                         </button>
                     </form>
                 </div>
