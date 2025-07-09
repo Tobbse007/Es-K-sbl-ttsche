@@ -1,6 +1,11 @@
 // Mobile-specific JavaScript for Es Käseblättsche website
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Mobile.js loaded");
+    
+    // Force the magazine straightening setup immediately
+    setupMagazineScrollAnimation();
+    
     // Check if we're on a mobile device
     const isMobile = window.innerWidth < 768 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
@@ -68,15 +73,15 @@ document.addEventListener('DOMContentLoaded', function() {
         pastIssuesGrid.style.webkitOverflowScrolling = 'touch';
         pastIssuesGrid.style.scrollSnapType = 'x mandatory';
         
-        // Add visual indicator for horizontal scrolling
-        const scrollIndicator = document.createElement('div');
-        scrollIndicator.className = 'scroll-indicator';
-        scrollIndicator.innerHTML = '<span>←</span> <span>→</span>';
-        scrollIndicator.style.textAlign = 'center';
-        scrollIndicator.style.color = '#3b82f6';
-        scrollIndicator.style.marginTop = '0.5rem';
-        scrollIndicator.style.fontSize = '0.875rem';
-        pastIssuesGrid.parentNode.insertBefore(scrollIndicator, pastIssuesGrid.nextSibling);
+        // Remove scroll indicator arrows
+        // const scrollIndicator = document.createElement('div');
+        // scrollIndicator.className = 'scroll-indicator';
+        // scrollIndicator.innerHTML = '<span>←</span> <span>→</span>';
+        // scrollIndicator.style.textAlign = 'center';
+        // scrollIndicator.style.color = '#3b82f6';
+        // scrollIndicator.style.marginTop = '0.5rem';
+        // scrollIndicator.style.fontSize = '0.875rem';
+        // pastIssuesGrid.parentNode.insertBefore(scrollIndicator, pastIssuesGrid.nextSibling);
         
         // Hide indicator after scrolling
         pastIssuesGrid.addEventListener('scroll', function() {
@@ -89,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function setupMobileInteractions() {
+    // Set up scroll-triggered rotation for magazine subtitle
+    setupMagazineScrollAnimation();
+    
     // Add touch-specific UI elements and interactions
     const pastIssueItems = document.querySelectorAll('.past-issue-item');
     
@@ -238,6 +246,148 @@ function optimizeFormInteractions() {
 }
 
 // Function to add ripple effect to buttons on touch
+// Function to handle magazine rotation animation on scroll
+function setupMagazineScrollAnimation() {
+    console.log("Setting up magazine straightening effect on scroll");
+    const magazineSection = document.querySelector('.magazine-section');
+    const magazineInner = document.getElementById('magazineInner');
+    
+    if (!magazineInner || !magazineSection) {
+        console.log("Magazine elements not found");
+        return;
+    }
+    
+    // Set initial state to be tilted
+    magazineInner.style.transform = 'rotate(4deg) scale(1)';
+    
+    // Apply initial check if section is already in viewport
+    setTimeout(() => {
+        const sectionRect = magazineSection.getBoundingClientRect();
+        if (sectionRect.top < window.innerHeight && sectionRect.bottom > 0) {
+            console.log("Magazine section is initially in view");
+            magazineInner.classList.add('straighten');
+        }
+    }, 100);
+    
+    // Scroll event handler to straighten magazine
+    const checkScrollPosition = () => {
+        const sectionRect = magazineSection.getBoundingClientRect();
+        const isInView = sectionRect.top < window.innerHeight * 0.7 && sectionRect.bottom > 0;
+        
+        if (isInView) {
+            console.log("Magazine section is in view on scroll - straightening");
+            magazineInner.classList.add('straighten');
+        } else {
+            console.log("Magazine section out of view - returning to tilted position");
+            magazineInner.classList.remove('straighten');
+        }
+    };
+    
+    // Use both approaches for maximum compatibility
+    
+    // 1. Simple scroll event listener for all browsers
+    window.addEventListener('scroll', checkScrollPosition, { passive: true });
+    
+    // 2. IntersectionObserver for modern browsers
+    if ('IntersectionObserver' in window) {
+        console.log("Using IntersectionObserver");
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // When magazine section is in view
+                if (entry.isIntersecting) {
+                    console.log("Magazine section intersecting via observer - straightening");
+                    magazineInner.classList.add('straighten');
+                } else {
+                    console.log("Magazine section not intersecting - returning to tilted position");
+                    magazineInner.classList.remove('straighten');
+                }
+            });
+        }, { threshold: [0, 0.3, 0.6] }); // Multiple thresholds for better detection
+        
+        // Observe the magazine section
+        observer.observe(magazineSection);
+    }
+    
+    // Also handle scroll events for smooth animation
+    document.addEventListener('touchmove', checkScrollPosition, { passive: true });
+    document.addEventListener('scroll', checkScrollPosition, { passive: true });
+    
+    // Check on resize as well
+    window.addEventListener('resize', checkScrollPosition, { passive: true });
+    
+    // Force check periodically for reliability
+    setInterval(checkScrollPosition, 1000);
+}
+
+// Reorganize magazine section for mobile
+function reorganizeMagazineSectionForMobile() {
+    if (window.innerWidth <= 768) {
+        const magazineSection = document.querySelector('.magazine-section');
+        if (!magazineSection) return;
+        
+        const container = magazineSection.querySelector('.container');
+        const flexContainer = container.querySelector('.flex-col.lg\\:flex-row');
+        if (!flexContainer) return;
+        
+        const magazineCover = document.getElementById('magazineCover');
+        const highlightsContainer = flexContainer.querySelector('.w-full.max-w-2xl');
+        if (!magazineCover || !highlightsContainer) return;
+        
+        // Get title elements
+        const titleSection = highlightsContainer.querySelector('.mb-5');
+        if (!titleSection) return;
+        
+        // Move title to the top
+        flexContainer.prepend(titleSection);
+        
+        // Make sure magazine cover is in the middle
+        titleSection.after(magazineCover);
+        
+        // Ensure highlights are at the bottom
+        const highlightsBox = highlightsContainer.querySelector('.magazine-highlights');
+        if (highlightsBox) {
+            magazineCover.after(highlightsBox);
+        }
+        
+        // Apply mobile-specific styling
+        titleSection.style.textAlign = 'center';
+        titleSection.style.marginBottom = '0.25rem'; // Further reduced spacing to 0.25rem
+        titleSection.style.width = '100%';
+        
+        // Center title elements
+        const titleBadge = titleSection.querySelector('span');
+        if (titleBadge) {
+            titleBadge.style.margin = '0 auto';
+            titleBadge.style.display = 'inline-block';
+        }
+        
+        const titleHeading = titleSection.querySelector('h2');
+        if (titleHeading) {
+            titleHeading.style.textAlign = 'center';
+        }
+        
+        const subtitleFlex = titleSection.querySelector('.flex.items-center');
+        if (subtitleFlex) {
+            subtitleFlex.style.justifyContent = 'center';
+        }
+        
+        // Style magazine cover
+        magazineCover.style.width = '85%';
+        magazineCover.style.margin = '0 auto 0 auto'; // Completely removed bottom margin
+        
+        // Style highlights box
+        if (highlightsBox) {
+            highlightsBox.style.width = '100%';
+            highlightsBox.style.marginTop = '-0.5rem'; // Added negative margin to pull it up
+        }
+    }
+}
+
+// Run on page load and window resize
+window.addEventListener('DOMContentLoaded', reorganizeMagazineSectionForMobile);
+window.addEventListener('resize', reorganizeMagazineSectionForMobile);
+
 function addTouchRippleEffect() {
     const buttons = document.querySelectorAll('button, .btn, a.bg-blue-medium, a.bg-blue-dark');
     
