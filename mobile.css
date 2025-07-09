@@ -1,0 +1,477 @@
+/* Mobile-specific styles for Es Käseblättsche website */
+
+/* Global Mobile Optimizations */
+@media screen and (max-width: 768px) {
+  /* Use custom vh unit that works better on mobile browsers */
+  .min-h-screen {
+    min-height: calc(var(--vh, 1vh) * 100) !important;
+  }
+  
+  /* Improve typography for mobile */
+  body {
+    font-size: 16px !important; /* Ensure base font size is readable */
+  }
+  
+  /* Improve container padding */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  /* Fix grid layouts on mobile */
+  .grid {
+    grid-gap: 16px !important;
+  }
+  
+  /* Ensure images don't overflow */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Make buttons and interactive elements more touchable */
+  button, a.btn, input[type="submit"], select {
+    min-height: 44px !important; /* Apple's recommended minimum touch target size */
+  }
+  
+  /* Disable parallax effects that perform poorly on mobile */
+  .bg-fixed {
+    background-attachment: scroll !important;
+  }
+  
+  /* Optimize scrolling */
+  html, body {
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+  }
+}
+
+/* Header and Navigation Optimizations */
+@media screen and (max-width: 768px) {
+  /* Adjust header spacing and position for mobile */
+  header.sticky {
+    top: 2px !important;
+  }
+  
+  header .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  /* Improve logo sizing for small screens */
+  header .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Make mobile menu button more touchable */
+  button[onclick="toggleMobileMenu"] {
+    padding: 10px !important;
+  }
+  
+  /* Ensure mobile menu has good spacing */
+  #mobileMenu {
+    margin-top: 0.5rem !important;
+    border-top-left-radius: 0.75rem !important;
+    border-top-right-radius: 0.75rem !important;
+  }
+  
+  /* Make touch targets bigger in mobile menu */
+  #mobileMenu a {
+    padding-top: 0.875rem !important;
+    padding-bottom: 0.875rem !important;
+  }
+  
+  /* Improve mobile CTA button */
+  #mobileMenu button {
+    margin-top: 0.5rem !important;
+  }
+}
+
+/* Mobile Magazine Section Optimizations */
+@media screen and (max-width: 768px) {
+  /* General section spacing adjustments */
+  .magazine-section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  /* Current issue magazine cover adjustments */
+  #magazineCover {
+    width: 85% !important;
+    margin: 0 auto 2rem !important;
+  }
+  
+  /* Improve rotation effect on smaller screens */
+  #magazineInner {
+    transform: rotate(4deg) scale(1) !important;
+  }
+  
+  /* Adjust title sizes for better mobile display */
+  .magazine-title {
+    font-size: 2.25rem !important;
+  }
+  
+  .magazine-subtitle {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Optimize highlights box for mobile */
+  .magazine-highlights {
+    padding: 1rem !important;
+  }
+  
+  /* Make TOC items more compact on small screens */
+  .toc-item {
+    padding: 0.75rem !important;
+  }
+  
+  /* Adjust past issues grid for vertical scrolling on mobile */
+  .past-issues-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+    gap: 1rem !important;
+    overflow-x: auto !important;
+    padding-bottom: 1rem !important;
+    scroll-snap-type: x mandatory !important;
+  }
+  
+  .past-issue-item {
+    scroll-snap-align: start !important;
+    min-width: 250px !important;
+  }
+  
+  /* Force-show the overlay info on mobile devices for better touch interaction */
+  @media (hover: none) {
+    .issue-overlay {
+      opacity: 1 !important;
+      background: linear-gradient(to top, rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.6) 70%, transparent) !important;
+    }
+    
+    .overlay-content {
+      transform: translateY(0) !important;
+    }
+    
+    /* Show only essential info on mobile by default */
+    .issue-description {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    
+    /* Add toggle functionality for mobile */
+    .issue-expanded .issue-description {
+      max-height: 150px;
+    }
+  }
+  
+  /* Improve spacing between sections */
+  .section-separator {
+    margin: 2rem auto !important;
+  }
+  
+  /* Adjust CTAs for better touch targets */
+  .magazine-cta {
+    padding: 0.75rem !important;
+    margin-top: 0.5rem !important;
+  }
+  
+  /* View more button adjustments */
+  .view-more-btn {
+    width: 90% !important;
+    margin: 1.5rem auto 0 !important;
+  }
+  
+  /* Hero Section Optimizations */
+  /* Adjust hero section spacing */
+  .hero-section {
+    padding-top: 1rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  /* Improve hero headline size and spacing */
+  .text-5xl.md\:text-7xl {
+    font-size: 2.5rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Better spacing for hero content */
+  .text-center.md\:text-left {
+    padding-top: 1rem !important;
+  }
+  
+  /* Optimize newsletter signup box */
+  .bg-white.rounded-xl.shadow-xl.p-3.mb-3 {
+    padding: 1rem !important;
+  }
+  
+  /* Make newsletter form more mobile-friendly */
+  form.flex.flex-col.sm\:flex-row {
+    gap: 0.75rem !important;
+  }
+  
+  form.flex.flex-col.sm\:flex-row input {
+    padding: 0.75rem !important;
+  }
+  
+  form.flex.flex-col.sm\:flex-row button {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+  
+  /* Hide decorative elements that take space on mobile */
+  .absolute.-top-3.-right-3.w-16.h-16 {
+    width: 10px !important;
+    height: 10px !important;
+    opacity: 0.1 !important;
+  }
+}
+
+/* Touch-specific optimizations for better mobile interactions */
+@media (hover: none) {
+  /* Show touch-specific UI elements */
+  .touch-expand-btn {
+    display: block !important;
+  }
+  
+  /* Improve touch target sizes */
+  button, 
+  a.btn, 
+  input[type="submit"], 
+  .nav-item {
+    min-height: 44px !important;
+  }
+  
+  /* Disable hover effects that don't work well on touch */
+  .hover\:scale-105, 
+  .group-hover\:scale-110, 
+  .hover\:translate-y-\[-4px\] {
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  /* Use active state instead of hover for touch feedback */
+  button:active, 
+  a:active, 
+  .nav-item:active {
+    opacity: 0.8 !important;
+  }
+  
+  /* Add ripple effect support */
+  .touch-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+}
+
+/* About Us & Content Sections Optimizations */
+@media screen and (max-width: 768px) {
+  /* General content section adjustments */
+  .py-16, .py-12 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+  
+  /* Adjust headings in content sections */
+  .text-4xl {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Adjust subheadings */
+  .text-2xl {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Improve card layouts on mobile */
+  .grid.grid-cols-1.md\:grid-cols-2,
+  .grid.grid-cols-1.md\:grid-cols-3,
+  .grid.grid-cols-1.md\:grid-cols-4 {
+    gap: 1.5rem !important;
+  }
+  
+  /* Optimize image containers */
+  .aspect-square, .aspect-video, .aspect-\[4\/3\] {
+    height: auto !important;
+  }
+  
+  /* Improve padding for content cards */
+  .p-6, .p-8 {
+    padding: 1.25rem !important;
+  }
+  
+  /* Better spacing for list items */
+  .space-y-4 {
+    margin-top: 0.75rem !important;
+  }
+  
+  /* Optimize CTAs in content sections */
+  .mt-8.flex.justify-center a, 
+  .mt-8.flex.justify-center button {
+    padding: 0.75rem 1.5rem !important;
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+}
+
+/* Timeline Section Optimizations */
+@media screen and (max-width: 768px) {
+  /* Make timeline more compact */
+  .timeline-container {
+    padding-left: 1.5rem !important;
+  }
+  
+  /* Adjust timeline dots for better visibility */
+  .timeline-dot {
+    left: 0 !important;
+  }
+  
+  /* Reduce padding in timeline cards */
+  .timeline-card {
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* Team Section Optimizations */
+@media screen and (max-width: 768px) {
+  /* Adjust team member cards */
+  .team-card {
+    padding: 1.25rem !important;
+  }
+  
+  /* Optimize team member image size */
+  .team-image {
+    width: 100px !important;
+    height: 100px !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Adjust social icons spacing */
+  .social-icons {
+    margin-top: 0.5rem !important;
+    justify-content: center !important;
+  }
+}
+
+/* Testimonial Section Optimizations */
+@media screen and (max-width: 768px) {
+  /* Make testimonial cards more compact */
+  .testimonial-card {
+    padding: 1.25rem !important;
+  }
+  
+  /* Adjust quote icon size */
+  .quote-icon {
+    font-size: 1.5rem !important;
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+  }
+}
+
+/* Contact Section Optimizations */
+@media screen and (max-width: 768px) {
+  /* Optimize contact form */
+  .contact-form input,
+  .contact-form textarea {
+    padding: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Make submit button full width */
+  .contact-form button {
+    width: 100% !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Adjust contact info spacing */
+  .contact-info {
+    padding: 1.25rem !important;
+  }
+  
+  .contact-item {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+}
+
+/* Footer Optimizations */
+@media screen and (max-width: 768px) {
+  /* Adjust footer spacing */
+  footer {
+    padding-top: 2.5rem !important;
+    padding-bottom: 5rem !important; /* Extra padding for back-to-top button */
+  }
+  
+  /* Improve spacing between footer columns */
+  footer .grid {
+    row-gap: 2rem !important;
+  }
+  
+  /* Make links more touchable */
+  footer .footer-links a {
+    display: block !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  
+  /* Optimize newsletter form in footer */
+  footer form input {
+    padding: 0.75rem !important;
+  }
+  
+  footer form button {
+    padding: 0.75rem !important;
+  }
+  
+  /* Adjust copyright section */
+  footer .border-t {
+    padding-top: 1.5rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  /* Make bottom links wrap better */
+  footer .flex.flex-wrap {
+    justify-content: center !important;
+    margin-top: 1rem !important;
+  }
+}
+
+/* Back to Top Button Optimization */
+@media screen and (max-width: 768px) {
+  #backToTopBtn {
+    width: 3rem !important;
+    height: 3rem !important;
+    bottom: 1.25rem !important;
+    right: 1.25rem !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+  }
+}
+
+/* Fix iOS Safari issues with fixed positions */
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific fixes */
+  .magazine-section .blur-element {
+    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px);
+  }
+  
+  /* Fix position sticky on iOS */
+  header.sticky {
+    position: -webkit-sticky !important;
+  }
+  
+  /* Fix for iOS bounce effect hiding fixed elements */
+  #backToTopBtn {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
