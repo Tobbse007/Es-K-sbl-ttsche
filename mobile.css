@@ -50,7 +50,7 @@
 @media screen and (max-width: 768px) {
   /* Adjust header spacing and position for mobile */
   header.sticky {
-    top: 2px !important;
+    top: 12px !important; /* Moved lower from 2px to 12px */
   }
   
   header .container {
