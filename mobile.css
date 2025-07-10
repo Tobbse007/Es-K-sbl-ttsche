@@ -144,6 +144,9 @@
     visibility: visible !important;
     opacity: 1 !important;
     z-index: 5 !important;
+    will-change: transform !important; /* Hardware acceleration for smoother scrolling */
+    transform: translateZ(0) !important; /* Force GPU acceleration */
+    contain: content !important; /* Improve scroll performance */
   }
   
   .past-issue-item {
@@ -160,6 +163,12 @@
     overflow: hidden !important;
     border-radius: 0.75rem !important;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    will-change: transform !important; /* Hardware acceleration */
+    transform: translateZ(0) !important; /* Force GPU acceleration */
+    backface-visibility: hidden !important; /* Reduce flickering */
+    perspective: 1000 !important; /* Additional hardware acceleration */
+    -webkit-perspective: 1000 !important; /* Additional hardware acceleration for Safari */
+    background-color: #f0f0f0 !important; /* Light background to prevent blue flash */
   }
   
   /* Ensure images in past issues are visible */
@@ -172,6 +181,19 @@
     object-fit: cover !important;
     position: relative !important;
     z-index: 1 !important;
+    transform: translateZ(0) !important; /* Force GPU acceleration */
+    backface-visibility: hidden !important; /* Reduce flickering */
+  }
+  
+  /* Image placeholder to prevent blue flashes */
+  .image-placeholder {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #f0f0f0 !important;
+    z-index: 0 !important;
   }
   
   /* Force-show the overlay info on mobile devices for better touch interaction */
@@ -690,5 +712,84 @@
   .past-issue-item .issue-overlay.show-overlay {
     opacity: 1 !important;
     background: linear-gradient(to top, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7) 70%, transparent) !important;
+  }
+}
+
+/* Performance optimizations for smooth scrolling */
+@media screen and (max-width: 768px) {
+  /* Enable hardware acceleration for smoother scrolling */
+  body {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+    
+    /* Reduce paint areas during scroll */
+    background-attachment: scroll !important;
+  }
+  
+  /* Optimize sections for scroll performance */
+  section {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* Prevent layout shifts during scrolling */
+  .past-issues-grid {
+    contain: layout size style;
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px;
+  }
+  
+  /* Improve rendering of past issue items */
+  .past-issue-item {
+    transform: translateZ(0);
+    will-change: opacity, transform;
+    contain: layout paint;
+    
+    /* Add transition for smoother appearance */
+    transition: opacity 0.1s ease;
+    
+    /* Ensure images have a light background before loading */
+    background-color: #f1f5f9 !important;
+  }
+  
+  /* Prevent flash of blue placeholder during scroll */
+  .past-issue-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #f1f5f9 !important;
+    z-index: 0;
+    border-radius: inherit;
+  }
+  
+  /* Optimize image rendering */
+  .past-issue-item img {
+    transition: opacity 0.1s ease;
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+  
+  /* Simplify overlays during scroll */
+  .issue-overlay {
+    transition: opacity 0.2s ease;
+    will-change: opacity;
+  }
+  
+  /* Disable hover animations during scroll for better performance */
+  body.is-scrolling .past-issue-item:hover .issue-overlay:not(.show-overlay) {
+    transition: none !important;
+  }
+  
+  /* Use a lighter gradient for better performance */
+  body.is-scrolling .issue-overlay {
+    background: linear-gradient(to top, rgba(30, 58, 138, 0.7), transparent) !important;
   }
 }

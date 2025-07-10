@@ -6,57 +6,115 @@
     <title>es Käseblättsche - Lokalnachrichten aus Quierschied, Göttelborn & Fischbach-Camphausen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="mobile.css">
-    <!-- Immediate image fix script - runs before page renders -->
+    <!-- Preload critical magazine images for fast loading -->
+    <link rel="preload" href="./Bilder/2025/ausgabe3.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="./Bilder/2025/asugabe4.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="./Bilder/2025/asugabe5.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="./Bilder/2025/ausgabe6.jpg" as="image" fetchpriority="high">
+    
+    <!-- Optimize images - runs before page renders -->
     <script>
         // This script runs immediately to fix image loading issues
-        window.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Direct image path fixing for mobile view
             if (window.innerWidth <= 768) {
-                console.log("Applying immediate image fix");
-                setTimeout(function() {
-                    // Get all past issue images
-                    var pastIssueItems = document.querySelectorAll('.past-issue-item');
-                    console.log("Found " + pastIssueItems.length + " past issues to fix");
+                console.log("Applying optimized image loading");
+                
+                // Exact mapping of correct filenames - defined at the top for quick access
+                var correctFilenames = {
+                    3: "./Bilder/2025/ausgabe3.jpg",  // Issue 3 uses "ausgabe"
+                    4: "./Bilder/2025/asugabe4.jpg",  // Issue 4 uses "asugabe" 
+                    5: "./Bilder/2025/asugabe5.jpg",  // Issue 5 uses "asugabe"
+                    6: "./Bilder/2025/ausgabe6.jpg"   // Issue 6 uses "ausgabe"
+                };
+                
+                // Preload all images at the highest priority
+                Object.values(correctFilenames).forEach(function(src) {
+                    var img = new Image();
+                    img.src = src;
+                    img.fetchPriority = "high";
+                    img.style.position = "absolute";
+                    img.style.opacity = "0";
+                    img.style.pointerEvents = "none";
+                    document.body.appendChild(img);
                     
-                    // Exact mapping of correct filenames
-                    var correctFilenames = {
-                        3: "./Bilder/2025/ausgabe3.jpg",  // Issue 3 uses "ausgabe"
-                        4: "./Bilder/2025/asugabe4.jpg",  // Issue 4 uses "asugabe" 
-                        5: "./Bilder/2025/asugabe5.jpg",  // Issue 5 uses "asugabe"
-                        6: "./Bilder/2025/ausgabe6.jpg"   // Issue 6 uses "ausgabe"
+                    // Remove after loading to clean up DOM
+                    img.onload = function() {
+                        console.log("Preloaded image: " + src);
+                        document.body.removeChild(img);
                     };
+                });
+                
+                // Handle the actual images with improved performance
+                var pastIssueItems = document.querySelectorAll('.past-issue-item');
+                pastIssueItems.forEach(function(item, index) {
+                    var img = item.querySelector('img');
+                    if (!img) return;
                     
+                    var issueNumber = index + 3; // Issues start at 3
+                    var correctPath = correctFilenames[issueNumber];
+                    
+                    // Apply correct path immediately
+                    img.setAttribute('src', correctPath);
+                    
+                    // Add critical rendering optimizations
+                    img.setAttribute('style', 'display:block !important; visibility:visible !important; opacity:1 !important; width:100% !important; height:100% !important; object-fit:cover !important; z-index:1 !important; position:relative !important; will-change:transform; transform: translateZ(0); backface-visibility: hidden;');
+                    
+                    // Optimize parent for hardware acceleration
+                    item.setAttribute('style', 'overflow:hidden !important; background-color:#f0f0f0 !important; will-change:transform; transform: translateZ(0); backface-visibility: hidden;');
+                    
+                    // Add loading="eager" and other performance attributes
+                    img.setAttribute('loading', 'eager');
+                    img.setAttribute('decoding', 'sync');
+                    img.setAttribute('fetchpriority', 'high');
+                    
+                    // Create placeholder background to prevent blue flicker
+                    var placeholder = document.createElement('div');
+                    placeholder.className = 'image-placeholder';
+                    placeholder.style.position = 'absolute';
+                    placeholder.style.top = '0';
+                    placeholder.style.left = '0';
+                    placeholder.style.width = '100%';
+                    placeholder.style.height = '100%';
+                    placeholder.style.backgroundColor = '#f0f0f0';
+                    placeholder.style.zIndex = '0';
+                    item.insertBefore(placeholder, img);
+                    
+                    // Add error handling
+                    img.onerror = function() {
+                        console.error("Failed to load image: " + correctPath);
+                        // Create a fallback colored div with text
+                        var fallback = document.createElement('div');
+                        fallback.style.position = 'absolute';
+                        fallback.style.top = '0';
+                        fallback.style.left = '0';
+                        fallback.style.width = '100%';
+                        fallback.style.height = '100%';
+                        fallback.style.backgroundColor = '#1e3a8a';
+                        fallback.style.color = 'white';
+                        fallback.style.display = 'flex';
+                        fallback.style.justifyContent = 'center';
+                        fallback.style.alignItems = 'center';
+                        fallback.style.zIndex = '1';
+                        fallback.textContent = 'Ausgabe ' + issueNumber;
+                        item.appendChild(fallback);
+                    };
+                });
+                
+                // Add a global fix function for emergency use
+                window.fixMagazineImages = function() {
+                    console.log("Running emergency image fix...");
                     pastIssueItems.forEach(function(item, index) {
                         var img = item.querySelector('img');
                         if (!img) return;
                         
-                        // Get issue number (3, 4, or 5) based on index
-                        var issueNumber = index + 3; // Issues start at 3
-                        
-                        // Set the correct path directly
+                        var issueNumber = index + 3; 
                         var correctPath = correctFilenames[issueNumber];
-                        console.log("Setting exact path for issue " + issueNumber + ": " + correctPath);
-                        
-                        // Force the correct image path
-                        img.setAttribute('src', correctPath);
-                        
-                        // Set explicit styles to ensure image is visible
-                        img.style.display = 'block';
-                        img.style.visibility = 'visible';
-                        img.style.opacity = '1';
-                        img.style.width = '100%';
-                        img.style.height = '100%';
-                        img.style.objectFit = 'cover';
-                        img.style.zIndex = '1';
-                        img.style.position = 'relative';
-                        
-                        // Also make sure parent is correct
-                        item.style.overflow = 'visible';
-                        item.style.backgroundColor = 'transparent';
+                        img.src = correctPath;
                     });
-                }, 100);
+                };
             }
-        });
+        }, { once: true }); // Only run once for better performance
     </script>
     <script>
         tailwind.config = {
@@ -717,7 +775,10 @@
                         <div class="relative rounded-lg overflow-hidden aspect-[3/4]">
                             <img src="./Bilder/2025/ausgabe6.jpg" 
                                 alt="es Käseblättsche - Juli 2025" 
-                                class="w-full h-full object-cover" />
+                                class="w-full h-full object-cover"
+                                loading="eager" 
+                                fetchpriority="high" 
+                                decoding="sync" />
                             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-blue-dark/70"></div>
                             <!-- Removed July 2025 and high quality print badge -->
                             <div class="absolute bottom-0 left-0 right-0 p-6">
@@ -840,7 +901,9 @@
                         src="./Bilder/2025/asugabe5.jpg" 
                         alt="es Käseblättsche - Mai 2025" 
                         class="w-full h-full object-cover"
-                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
+                        loading="eager" 
+                        fetchpriority="high"
+                        decoding="sync"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->
@@ -870,7 +933,9 @@
                         src="./Bilder/2025/asugabe4.jpg" 
                         alt="es Käseblättsche - April 2025" 
                         class="w-full h-full object-cover"
-                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
+                        loading="eager" 
+                        fetchpriority="high"
+                        decoding="sync"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->
@@ -900,7 +965,9 @@
                         src="./Bilder/2025/ausgabe3.jpg" 
                         alt="es Käseblättsche - März 2025" 
                         class="w-full h-full object-cover"
-                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
+                        loading="eager" 
+                        fetchpriority="high"
+                        decoding="sync"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->

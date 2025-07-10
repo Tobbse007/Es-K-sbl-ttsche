@@ -553,103 +553,166 @@ window.addEventListener('resize', function() {
     window.resizePastIssuesTimer = setTimeout(setupPastIssuesTapInteraction, 250);
 });
 
-// Ensure past issue items are visible in mobile view
+// Ensure past issue items are visible in mobile view with optimized performance
 function ensurePastIssuesVisible() {
-    console.log("Checking past issues visibility...");
+    console.log("Checking past issues visibility with optimized loading...");
     if (window.innerWidth <= 768) {
         // Make sure past issues grid is visible
         const pastIssuesGrid = document.querySelector('.past-issues-grid');
         if (pastIssuesGrid) {
             console.log("Found past issues grid");
             
-            // Force explicit styles to ensure grid visibility
-            pastIssuesGrid.style.display = 'grid';
-            pastIssuesGrid.style.gridTemplateColumns = '1fr';
-            pastIssuesGrid.style.gap = '2rem';
-            pastIssuesGrid.style.width = '100%';
-            pastIssuesGrid.style.maxWidth = '320px';
-            pastIssuesGrid.style.margin = '0 auto';
-            pastIssuesGrid.style.visibility = 'visible';
-            pastIssuesGrid.style.opacity = '1';
-            pastIssuesGrid.style.zIndex = '5';
+            // Force explicit styles to ensure grid visibility with hardware acceleration
+            pastIssuesGrid.style.cssText = `
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+                width: 100% !important;
+                max-width: 320px !important;
+                margin: 0 auto !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                z-index: 5 !important;
+                will-change: transform !important;
+                transform: translateZ(0) !important;
+                contain: content !important;
+            `;
+            
+            // Define correct filenames map - store it once
+            const correctFilenames = {
+                3: "./Bilder/2025/ausgabe3.jpg",  // Issue 3 uses "ausgabe"
+                4: "./Bilder/2025/asugabe4.jpg",  // Issue 4 uses "asugabe" 
+                5: "./Bilder/2025/asugabe5.jpg",  // Issue 5 uses "asugabe"
+                6: "./Bilder/2025/ausgabe6.jpg"   // Issue 6 uses "ausgabe"
+            };
             
             // Check and fix item visibility
             const pastIssueItems = pastIssuesGrid.querySelectorAll('.past-issue-item');
-            console.log('Checking visibility of', pastIssueItems.length, 'past issue items');
+            console.log('Optimizing visibility of', pastIssueItems.length, 'past issue items');
             
-            pastIssueItems.forEach((item, index) => {
-                // Force item to be visible with important styling
-                item.style.cssText = `
-                    display: block !important;
-                    position: relative !important;
-                    height: auto !important;
-                    aspect-ratio: 3/4 !important;
-                    width: 100% !important;
-                    margin: 0 auto !important;
-                    visibility: visible !important;
-                    opacity: 1 !important;
-                    overflow: hidden !important;
-                    border-radius: 0.75rem !important;
-                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-                `;
-                
-                // Debug info
-                console.log(`Issue ${index+1} display:`, window.getComputedStyle(item).display);
-                
-                // Ensure image is visible
-                const img = item.querySelector('img');
-                if (img) {
-                    console.log(`Issue ${index+1} image src:`, img.src);
-                    
-                    // Force image to be visible with important styling
-                    img.style.cssText = `
-                        display: block !important;
-                        width: 100% !important;
-                        height: 100% !important;
-                        object-fit: cover !important;
-                        position: relative !important;
-                        visibility: visible !important;
-                        opacity: 1 !important;
-                        z-index: 1 !important;
-                    `;
-                    
-                    // Try reloading the image
-                    const originalSrc = img.src;
-                    img.src = '';
-                    setTimeout(() => {
-                        img.src = originalSrc;
-                        console.log(`Reloaded image ${index+1}`);
-                    }, 50 * (index + 1));
-                    
-                    // Add error handler
-                    img.onerror = function() {
-                        console.error(`Failed to load image ${index+1}: ${originalSrc}`);
-                        // Try with fully qualified path if it's a relative path
-                        if (!originalSrc.includes('http')) {
-                            const basePath = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-                            const fullPath = basePath + '/' + originalSrc.replace('./', '');
-                            console.log(`Trying full path: ${fullPath}`);
-                            img.src = fullPath;
+            // Set up an intersection observer for lazy loading
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const item = entry.target;
+                        const img = item.querySelector('img');
+                        const index = Array.from(pastIssueItems).indexOf(item);
+                        const issueNumber = index + 3; // Issues start at 3
+                        
+                        if (img) {
+                            // Use the correct filename directly from our map
+                            const correctSrc = correctFilenames[issueNumber];
+                            if (correctSrc) {
+                                console.log(`Loading image ${index+1} (issue ${issueNumber}) with correct path: ${correctSrc}`);
+                                img.src = correctSrc;
+                            }
+                            
+                            // Add placeholder SVG in case image fails
+                            img.onerror = function() {
+                                console.error(`Failed to load image ${index+1}, using placeholder`);
+                                // Create a placeholder div with background color instead of SVG
+                                const placeholder = document.createElement('div');
+                                placeholder.style.cssText = `
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    z-index: 1;
+                                    background-color: #1e3a8a;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    color: white;
+                                    font-family: Arial, sans-serif;
+                                    font-size: 24px;
+                                `;
+                                placeholder.textContent = `Ausgabe ${issueNumber}`;
+                                item.appendChild(placeholder);
+                            };
+                            
+                            // Force hardware acceleration and other optimizations
+                            img.style.cssText = `
+                                display: block !important;
+                                width: 100% !important;
+                                height: 100% !important;
+                                object-fit: cover !important;
+                                position: relative !important;
+                                visibility: visible !important;
+                                opacity: 1 !important;
+                                z-index: 1 !important;
+                                transform: translateZ(0) !important;
+                                backface-visibility: hidden !important;
+                                transition: opacity 0.2s ease-in !important;
+                            `;
+                            
+                            // Preload at high priority
+                            img.fetchPriority = "high";
+                            img.loading = "eager";
                         }
-                    };
-                } else {
-                    console.warn(`Issue ${index+1} has no image!`);
-                }
-                
-                // Ensure overlay is properly styled
-                const overlay = item.querySelector('.issue-overlay');
-                if (overlay) {
-                    overlay.style.cssText = `
-                        position: absolute !important;
-                        inset: 0 !important;
-                        background: linear-gradient(to top, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7) 70%, transparent) !important;
-                        z-index: 2 !important;
-                        display: flex !important;
-                        flex-direction: column !important;
-                        justify-content: flex-end !important;
-                        padding: 1rem !important;
-                    `;
-                }
+                        
+                        // Apply hardware acceleration to the item
+                        item.style.cssText = `
+                            display: block !important;
+                            position: relative !important;
+                            height: auto !important;
+                            aspect-ratio: 3/4 !important;
+                            width: 100% !important;
+                            margin: 0 auto !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            overflow: hidden !important;
+                            border-radius: 0.75rem !important;
+                            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+                            will-change: transform !important;
+                            transform: translateZ(0) !important;
+                            backface-visibility: hidden !important;
+                            background-color: #f0f0f0 !important;
+                        `;
+                        
+                        // Create a placeholder background to prevent blue flash
+                        if (!item.querySelector('.image-placeholder')) {
+                            const placeholder = document.createElement('div');
+                            placeholder.className = 'image-placeholder';
+                            placeholder.style.cssText = `
+                                position: absolute !important;
+                                top: 0 !important;
+                                left: 0 !important;
+                                width: 100% !important;
+                                height: 100% !important;
+                                background-color: #f0f0f0 !important;
+                                z-index: 0 !important;
+                            `;
+                            item.appendChild(placeholder);
+                        }
+                        
+                        // Ensure overlay is properly styled
+                        const overlay = item.querySelector('.issue-overlay');
+                        if (overlay) {
+                            overlay.style.cssText = `
+                                position: absolute !important;
+                                inset: 0 !important;
+                                background: linear-gradient(to top, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7) 70%, transparent) !important;
+                                z-index: 2 !important;
+                                display: flex !important;
+                                flex-direction: column !important;
+                                justify-content: flex-end !important;
+                                padding: 1rem !important;
+                            `;
+                        }
+                        
+                        // Stop observing this element
+                        observer.unobserve(item);
+                    }
+                });
+            }, { 
+                rootMargin: '100px 0px', // Load images 100px before they come into view
+                threshold: 0.01 // Trigger when just 1% of the item is visible
+            });
+            
+            // Observe each item
+            pastIssueItems.forEach(item => {
+                imageObserver.observe(item);
             });
             
             // Force a layout recalculation
@@ -662,6 +725,49 @@ function ensurePastIssuesVisible() {
 
 // Debug mode for troubleshooting past issues visibility
 const DEBUG_MODE = true;
+
+// Add global debug function accessible from console
+window.fixMobileImages = function() {
+    console.log("Manual image fixing started");
+    ensurePastIssuesVisible();
+    
+    // Define correct filenames map
+    const correctFilenames = {
+        3: "./Bilder/2025/ausgabe3.jpg",  // Issue 3 uses "ausgabe"
+        4: "./Bilder/2025/asugabe4.jpg",  // Issue 4 uses "asugabe" 
+        5: "./Bilder/2025/asugabe5.jpg",  // Issue 5 uses "asugabe"
+        6: "./Bilder/2025/ausgabe6.jpg"   // Issue 6 uses "ausgabe"
+    };
+    
+    // Force all images to be loaded immediately
+    const pastIssueItems = document.querySelectorAll('.past-issue-item');
+    pastIssueItems.forEach((item, index) => {
+        const img = item.querySelector('img');
+        if (img) {
+            const issueNumber = index + 3; // Issues start at 3
+            const correctSrc = correctFilenames[issueNumber];
+            
+            if (correctSrc) {
+                console.log(`Fixing image ${index+1} with path: ${correctSrc}`);
+                img.src = correctSrc;
+                img.style.cssText = `
+                    display: block !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    object-fit: cover !important;
+                    position: relative !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    z-index: 1 !important;
+                    transform: translateZ(0) !important;
+                `;
+            }
+        }
+    });
+    
+    console.log("Manual image fixing completed - if issues persist, reload the page");
+    return "Image fixing completed";
+};
 
 // Debug function for past issues
 function debugPastIssues() {
@@ -964,7 +1070,7 @@ function monitorPastIssueImageLoading() {
                 const isNowLoaded = img.complete && img.naturalHeight !== 0;
                 if (!isNowLoaded) {
                     console.log(`Setting placeholder for image ${index+1}`);
-                    img.src = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%234f46e5%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20alignment-baseline%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%3EAusgabe%20${index+3}%3C%2Ftext%3E%3C%2Fsvg%3E';
+                    img.style.display = 'none';
                 }
             }, 500);
         };
@@ -1277,8 +1383,8 @@ window.debugMobileIssues = {
     usePlaceholders: function() {
         const images = document.querySelectorAll('.past-issue-item img');
         images.forEach((img, index) => {
-            const issueNum = index + 3;
-            img.src = `data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%234f46e5%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22white%22%20text-anchor%3D%22middle%22%20alignment-baseline%3D%22middle%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%3EAusgabe%20${issueNum}%3C%2Ftext%3E%3C%2Fsvg%3E`;
+            const issueNum = index + 3; 
+                    img.style.display = 'none';
             img.style.display = 'block';
         });
         return "Placeholders applied";
@@ -1287,3 +1393,87 @@ window.debugMobileIssues = {
 
 // Print instructions to the console for manual debugging
 console.log("Mobile debugging tools available. You can use: window.debugMobileIssues.fixImages(), window.debugMobileIssues.showInfo(), or window.debugMobileIssues.usePlaceholders() from the browser console if needed.");
+
+// Scroll performance optimizations
+(function() {
+    // Variables to track scrolling state
+    let isScrolling = false;
+    let scrollTimeout = null;
+    
+    // Add scroll detection
+    window.addEventListener('scroll', function() {
+        // Add scrolling class to body during scroll
+        if (!isScrolling) {
+            isScrolling = true;
+            document.body.classList.add('is-scrolling');
+        }
+        
+        // Clear the timeout on new scroll event
+        clearTimeout(scrollTimeout);
+        
+        // Set a timeout to remove the class after scrolling stops
+        scrollTimeout = setTimeout(function() {
+            isScrolling = false;
+            document.body.classList.remove('is-scrolling');
+        }, 100); // Adjust based on performance testing
+    }, { passive: true }); // Use passive event for better performance
+    
+    // Optimize image rendering during scroll
+    function optimizeImagesForScroll() {
+        // Only in mobile view
+        if (window.innerWidth > 768) return;
+        
+        const pastIssueItems = document.querySelectorAll('.past-issue-item');
+        if (!pastIssueItems.length) return;
+        
+        // Process each image
+        pastIssueItems.forEach(item => {
+            const img = item.querySelector('img');
+            if (!img) return;
+            
+            // Create intersection observer for each image
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // If image is visible or about to be visible
+                    if (entry.isIntersecting || entry.intersectionRatio > 0) {
+                        // Force hardware acceleration and improve rendering
+                        img.style.transform = 'translateZ(0)';
+                        img.style.willChange = 'transform';
+                        img.style.backfaceVisibility = 'hidden';
+                        
+                        // Ensure image is visible
+                        img.style.opacity = '1';
+                        img.style.display = 'block';
+                    } else {
+                        // Optimize rendering for off-screen images
+                        img.style.willChange = 'auto';
+                    }
+                });
+            }, { 
+                rootMargin: '100px 0px', // Start optimizing before the image is visible
+                threshold: [0, 0.1, 0.5, 1] // Multiple thresholds for better detection
+            });
+            
+            // Start observing
+            observer.observe(item);
+        });
+    }
+    
+    // Run optimization on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Use requestIdleCallback for non-critical optimizations
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                optimizeImagesForScroll();
+            });
+        } else {
+            setTimeout(optimizeImagesForScroll, 1000);
+        }
+    });
+    
+    // Also run when window is resized
+    window.addEventListener('resize', function() {
+        clearTimeout(window.resizePerformanceTimer);
+        window.resizePerformanceTimer = setTimeout(optimizeImagesForScroll, 250);
+    }, { passive: true });
+})();
