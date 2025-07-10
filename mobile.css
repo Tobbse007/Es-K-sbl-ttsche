@@ -133,6 +133,7 @@
   
   /* Adjust past issues grid for vertical stacking on mobile */
   .past-issues-grid {
+    display: grid !important;
     grid-template-columns: 1fr !important; /* Force single column */
     gap: 2rem !important; /* More vertical space between items */
     padding-bottom: 1rem !important;
@@ -140,15 +141,37 @@
     margin: 0 auto !important; /* Center the grid */
     overflow-x: visible !important; /* Remove horizontal scrolling */
     scroll-snap-type: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 5 !important;
   }
   
   .past-issue-item {
+    display: block !important;
+    position: relative !important;
     scroll-snap-align: start !important;
     min-width: auto !important; /* Let items take natural width */
     max-height: none !important; /* Remove height constraint */
     margin: 0 auto !important;
     width: 100% !important;
     aspect-ratio: 3/4 !important; /* Maintain aspect ratio */
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Ensure images in past issues are visible */
+  .past-issue-item img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    position: relative !important;
+    z-index: 1 !important;
   }
   
   /* Force-show the overlay info on mobile devices for better touch interaction */
@@ -537,5 +560,135 @@
   /* Remove margin from the max-width container that was pushing things away */
   .magazine-section .w-full.max-w-2xl {
     margin-bottom: 0 !important;
+  }
+}
+
+/* Touch interaction for past issues */
+@media screen and (max-width: 768px) {
+  /* Hide hover effects for past issues on mobile */
+  .past-issue-item .issue-overlay {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    z-index: 10 !important; /* Ensure overlay is above the image */
+  }
+  
+  /* Force group-hover styles when show-overlay class is present */
+  .past-issue-item .issue-overlay.show-overlay {
+    opacity: 1 !important;
+  }
+  
+  /* Force content to appear when overlay is shown */
+  .past-issue-item .issue-overlay.show-overlay .overlay-content {
+    transform: translateY(0) !important;
+  }
+  
+  /* Disable hover effects to prevent conflicts with tap */
+  .past-issue-item:hover .issue-overlay:not(.show-overlay) {
+    opacity: 0 !important;
+  }
+  
+  /* Make past issues tappable with visual cue */
+  .past-issue-item {
+    position: relative !important;
+    cursor: pointer !important;
+    display: block !important; /* Ensure element is visible */
+    height: auto !important; /* Maintain height */
+    aspect-ratio: 3/4 !important; /* Keep aspect ratio */
+    background-color: transparent !important; /* Ensure no background color */
+    overflow: visible !important; /* Ensure content isn't clipped */
+  }
+  
+  /* Critical: Ensure images display correctly */
+  .past-issue-item img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 1 !important; /* Ensure image is visible but below overlay */
+  }
+  
+  /* Add tap indicator */
+  .past-issue-item::after {
+    content: "Tippen" !important;
+    position: absolute !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    color: #1e3a8a !important;
+    padding: 4px 8px !important;
+    border-radius: 4px !important;
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+    pointer-events: none !important;
+    opacity: 0.8 !important;
+    transition: opacity 0.3s ease !important;
+    z-index: 5 !important; /* Ensure above image but below overlay */
+  }
+  
+  /* Hide tap indicator when overlay is shown */
+  .past-issue-item.tapped::after {
+    opacity: 0 !important;
+  }
+  
+  /* Ensure no blue background shows through */
+  .past-issue-item::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-color: white !important; /* White fallback if image fails */
+    z-index: 0 !important;
+  }
+}
+
+/* Fix for past issue images not displaying in mobile view */
+@media screen and (max-width: 768px) {
+  /* Ensure past issue items are visible */
+  .past-issues-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    max-width: 320px !important;
+    margin: 0 auto !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  /* Force items to display properly */
+  .past-issue-item {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 3/4 !important;
+    overflow: hidden !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1 !important;
+    background-color: transparent !important;
+  }
+  
+  /* Force images to display properly */
+  .past-issue-item img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+  
+  /* Only show overlay when explicitly shown */
+  .past-issue-item .issue-overlay:not(.show-overlay) {
+    opacity: 0 !important;
+  }
+  
+  /* Make overlay visible when shown */
+  .past-issue-item .issue-overlay.show-overlay {
+    opacity: 1 !important;
+    background: linear-gradient(to top, rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.7) 70%, transparent) !important;
   }
 }

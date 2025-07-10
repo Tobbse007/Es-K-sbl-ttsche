@@ -6,6 +6,58 @@
     <title>es Käseblättsche - Lokalnachrichten aus Quierschied, Göttelborn & Fischbach-Camphausen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="mobile.css">
+    <!-- Immediate image fix script - runs before page renders -->
+    <script>
+        // This script runs immediately to fix image loading issues
+        window.addEventListener('DOMContentLoaded', function() {
+            // Direct image path fixing for mobile view
+            if (window.innerWidth <= 768) {
+                console.log("Applying immediate image fix");
+                setTimeout(function() {
+                    // Get all past issue images
+                    var pastIssueItems = document.querySelectorAll('.past-issue-item');
+                    console.log("Found " + pastIssueItems.length + " past issues to fix");
+                    
+                    // Exact mapping of correct filenames
+                    var correctFilenames = {
+                        3: "./Bilder/2025/ausgabe3.jpg",  // Issue 3 uses "ausgabe"
+                        4: "./Bilder/2025/asugabe4.jpg",  // Issue 4 uses "asugabe" 
+                        5: "./Bilder/2025/asugabe5.jpg",  // Issue 5 uses "asugabe"
+                        6: "./Bilder/2025/ausgabe6.jpg"   // Issue 6 uses "ausgabe"
+                    };
+                    
+                    pastIssueItems.forEach(function(item, index) {
+                        var img = item.querySelector('img');
+                        if (!img) return;
+                        
+                        // Get issue number (3, 4, or 5) based on index
+                        var issueNumber = index + 3; // Issues start at 3
+                        
+                        // Set the correct path directly
+                        var correctPath = correctFilenames[issueNumber];
+                        console.log("Setting exact path for issue " + issueNumber + ": " + correctPath);
+                        
+                        // Force the correct image path
+                        img.setAttribute('src', correctPath);
+                        
+                        // Set explicit styles to ensure image is visible
+                        img.style.display = 'block';
+                        img.style.visibility = 'visible';
+                        img.style.opacity = '1';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.zIndex = '1';
+                        img.style.position = 'relative';
+                        
+                        // Also make sure parent is correct
+                        item.style.overflow = 'visible';
+                        item.style.backgroundColor = 'transparent';
+                    });
+                }, 100);
+            }
+        });
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -788,6 +840,7 @@
                         src="./Bilder/2025/asugabe5.jpg" 
                         alt="es Käseblättsche - Mai 2025" 
                         class="w-full h-full object-cover"
+                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->
@@ -817,6 +870,7 @@
                         src="./Bilder/2025/asugabe4.jpg" 
                         alt="es Käseblättsche - April 2025" 
                         class="w-full h-full object-cover"
+                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->
@@ -846,6 +900,7 @@
                         src="./Bilder/2025/ausgabe3.jpg" 
                         alt="es Käseblättsche - März 2025" 
                         class="w-full h-full object-cover"
+                        onerror="console.log('Error loading image:', this.src); this.style.display='none'; this.onerror=null;"
                     >
                     
                     <!-- Overlay that appears on hover - blue overlay -->
