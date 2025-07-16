@@ -792,4 +792,21 @@
   body.is-scrolling .issue-overlay {
     background: linear-gradient(to top, rgba(30, 58, 138, 0.7), transparent) !important;
   }
+  
+  /* Footer link hover effects */
+  .footer-link {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .footer-link:hover span {
+    color: white !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    opacity: 1 !important;
+  }
+
+  .footer-link:hover .fas {
+    color: white !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    opacity: 1 !important;
+  }
 }

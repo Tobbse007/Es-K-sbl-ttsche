@@ -23,6 +23,9 @@ function toggleMobileMenu() {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle navbar indicator immediately
+    initializeNavIndicator();
+    
     // Add required animation classes to CSS
     addAnimationStyles();
     
@@ -57,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
 // Extremely simple magazine effect - ONLY rotation, no scaling
 function initializeMagazineScrollEffect() {
     const magazineInner = document.getElementById('magazineInner');
+    
+    // Remove old direct initialization as we now have a dedicated function
     
     if (magazineInner) {
         // Ensure initial state is set
@@ -705,6 +710,36 @@ function initializeMagazineScrollEffect() {
     }
 }
 
+// Special function to reliably initialize the navbar indicator
+function initializeNavIndicator() {
+    const hoverIndicator = document.getElementById('hoverIndicator');
+    const mainNav = document.getElementById('mainNav');
+    const activeNavItem = document.querySelector('.nav-item[data-index="0"]'); // Startseite
+    
+    if (!hoverIndicator || !mainNav || !activeNavItem) return;
+    
+    // Wait to ensure layout is fully calculated
+    setTimeout(() => {
+        // Calculate dimensions and position for Startseite menu item
+        const rect = activeNavItem.getBoundingClientRect();
+        const navRect = mainNav.getBoundingClientRect();
+        
+        // Apply precise width and position
+        hoverIndicator.style.width = `${rect.width}px`;
+        hoverIndicator.style.left = `${rect.left - navRect.left}px`;
+        hoverIndicator.style.opacity = '1';
+        
+        // For extra reliability on window resize
+        window.addEventListener('resize', () => {
+            const newRect = activeNavItem.getBoundingClientRect();
+            const newNavRect = mainNav.getBoundingClientRect();
+            
+            hoverIndicator.style.width = `${newRect.width}px`;
+            hoverIndicator.style.left = `${newRect.left - newNavRect.left}px`;
+        });
+    }, 50);
+}
+
 // Smooth hover effect for navbar
 function initializeSmoothNavHover() {
     const navItems = document.querySelectorAll('.nav-item');
@@ -713,8 +748,8 @@ function initializeSmoothNavHover() {
     
     if (!navItems.length || !hoverIndicator || !mainNav) return;
     
-    // Initial setup - hide indicator
-    let activeIndex = null;
+    // Initial setup
+    let activeIndex = 0; // Default to first item (Startseite)
     let isHovering = false;
     
     // Function to update the indicator position and width
@@ -754,12 +789,8 @@ function initializeSmoothNavHover() {
             // Update the active item
             activeIndex = parseInt(item.dataset.index);
             
-            // Update classes for styling
-            navItems.forEach(navItem => {
-                navItem.classList.remove('text-blue-medium');
-            });
-            
-            item.classList.add('text-blue-medium');
+            // Just update the indicator position without changing text color
+            updateIndicator(item);
         });
     });
     
@@ -795,9 +826,12 @@ function initializeSmoothNavHover() {
         activeIndex = 0;
     }
     
-    // Set initial active item
+    // Set initial active item - just position the indicator without changing text color
     if (initialActiveItem) {
-        initialActiveItem.classList.add('text-blue-medium');
+        // Set the indicator on the active item on page load with a slight delay
+        setTimeout(() => {
+            updateIndicator(initialActiveItem);
+        }, 100);
     }
 }
 
