@@ -549,44 +549,48 @@ function updateEventList() {
         
         // HTML für das Event erstellen
         const eventHtml = `
-            <div class="mb-4 group hover:bg-gray-50 rounded-lg transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md overflow-hidden relative" 
+            <div class="mb-3 group hover:bg-gray-50 rounded-lg transition-all duration-300 border border-gray-100 shadow-sm hover:shadow-md overflow-hidden relative cursor-pointer" 
                  id="event-${event.id}" 
                  data-event-id="${event.id}" 
                  data-event-date="${event.date}" 
-                 data-event-category="${event.category}">
+                 data-event-title="${event.title}"
+                 data-event-description="${event.description}"
+                 data-event-location="${event.location}" 
+                 data-event-category="${event.category}"
+                 onclick="openEventDetail(${event.id}); event.preventDefault(); return false;">
                 <!-- Left color accent -->
-                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-${categoryColor}"></div>
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-${categoryColor}"></div>
                 
-                <div class="flex py-2.5 px-4 pl-5">
-                    <div class="mr-3 flex-shrink-0">
+                <div class="flex py-2 px-3 pl-4">
+                    <div class="mr-2 flex-shrink-0">
                         <!-- Color-coded date card -->
-                        <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200 text-center w-14">
-                            <div class="py-1.5 px-2 font-bold text-xl text-gray-800">${day}</div>
-                            <div class="py-0.5 font-medium text-xs text-${textColor} bg-${bgColor}">${month}</div>
+                        <div class="bg-white shadow-sm rounded overflow-hidden border border-gray-200 text-center w-12">
+                            <div class="py-0.5 px-1 font-bold text-lg text-gray-800">${day}</div>
+                            <div class="py-0.5 font-medium text-[10px] text-${textColor} bg-${bgColor}">${month}</div>
                         </div>
                     </div>
                     
                     <div class="flex-1">
                         <div class="flex items-center justify-between mb-0.5">
-                            <span class="flex items-center text-${textColor} text-sm font-medium uppercase tracking-wide">
-                                <span class="w-3 h-3 bg-${categoryColor} rounded-full mr-2 inline-block"></span>
+                            <span class="flex items-center text-${textColor} text-[10px] font-medium uppercase tracking-wide">
+                                <span class="w-2 h-2 bg-${categoryColor} rounded-full mr-1 inline-block"></span>
                                 ${event.category.charAt(0).toUpperCase() + event.category.slice(1)}
                             </span>
-                            <a href="#" class="text-gray-400 hover:text-${categoryColor} transition-colors w-7 h-7 flex items-center justify-center rounded-full hover:bg-${bgColor}">
-                                <i class="fas fa-arrow-right text-sm"></i>
+                            <a href="#" class="text-gray-400 hover:text-${categoryColor} transition-colors w-5 h-5 flex items-center justify-center rounded-full hover:bg-${bgColor}">
+                                <i class="fas fa-arrow-right text-[10px]"></i>
                             </a>
                         </div>
-                        <h4 class="font-bold text-lg text-gray-800 mb-0.5 group-hover:text-${categoryColor} transition-colors">${event.title}</h4>
-                        <p class="text-gray-600 text-sm mb-1">${event.description}</p>
+                        <h4 class="font-bold text-sm sm:text-base text-gray-800 mb-0.5 group-hover:text-${categoryColor} transition-colors truncate">${event.title}</h4>
+                        <p class="text-gray-600 text-[10px] sm:text-xs mb-1.5 line-clamp-1">${event.description}</p>
                         
-                        <div class="flex items-center text-gray-500 text-sm">
-                            <div class="flex items-center mr-4">
-                                <i class="far fa-clock mr-1.5 text-${categoryColor}"></i>
+                        <div class="flex items-center text-gray-500 text-[10px] sm:text-xs">
+                            <div class="flex items-center mr-3">
+                                <i class="far fa-clock mr-1 text-${categoryColor}"></i>
                                 <span>${time} Uhr</span>
                             </div>
                             <div class="flex items-center">
-                                <i class="fas fa-map-marker-alt mr-1.5 text-${categoryColor}"></i>
-                                <span>${event.location}</span>
+                                <i class="fas fa-map-marker-alt mr-1 text-${categoryColor}"></i>
+                                <span class="truncate">${event.location}</span>
                             </div>
                         </div>
                     </div>
@@ -856,6 +860,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Visuelle Bestätigung im Konsolen-Log
         console.log(`Navigating to event ID ${event.id}: ${event.title} (${event.date})`);
+        
+        // Öffne das Event-Detail Modal, wenn verfügbar
+        if (typeof openEventDetail === 'function') {
+            openEventDetail(event.id);
+        }
         
         // Suchen des entsprechenden Event-Elements und Seitenumschaltung wenn nötig
         scrollToEvent(event.id);

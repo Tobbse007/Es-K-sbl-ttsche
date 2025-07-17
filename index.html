@@ -1064,12 +1064,6 @@
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>
-                        
-                        <!-- View All Button -->
-                        <a href="#" class="inline-flex items-center px-5 py-2 border border-blue-medium text-blue-medium hover:bg-blue-medium hover:text-white font-medium rounded-lg transition-all duration-300 ml-auto md:ml-0">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            Alle Termine anzeigen
-                        </a>
                     </div>
                 </div>
                 
@@ -1104,7 +1098,7 @@
                     </p>
                     
                     <div class="flex flex-wrap gap-4 mt-8">
-                        <a href="#" class="px-6 py-3 bg-white text-blue-dark rounded-lg font-semibold hover:bg-blue-light transition-all duration-300 flex items-center group shadow-lg shadow-blue-dark/20">
+                        <a href="./pages/kontakt/index.html#article-form" class="px-6 py-3 bg-white text-blue-dark rounded-lg font-semibold hover:bg-blue-light transition-all duration-300 flex items-center group shadow-lg shadow-blue-dark/20">
                             <i class="fas fa-pencil-alt mr-2"></i>
                             <span>Beitrag einreichen</span>
                         </a>
@@ -1114,21 +1108,21 @@
                     </p>
                 </div>
                 
-                <!-- Content for partners -->
+                <!-- Content for advertising -->
                 <div class="w-full max-w-xl bg-blue-dark/40 p-6 rounded-lg backdrop-blur-sm">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4 leading-tight text-white">
                         Unterstützen Sie uns <br>
-                        <span class="text-blue-light">Werden Sie Partner!</span>
+                        <span class="text-blue-light">Schalten Sie eine Anzeige!</span>
                     </h2>
                     <p class="text-white text-lg mb-6 font-medium">
-                        Mit einer Partnerschaft im Käseblättsche erreichen Sie eine breite lokale Zielgruppe und unterstützen gleichzeitig unabhängigen Journalismus in unserer Gemeinde.
+                        Mit einer Anzeige im Käseblättsche erreichen Sie eine breite lokale Zielgruppe und unterstützen gleichzeitig unabhängigen Journalismus in unserer Gemeinde.
                     </p>
                     
                     <div class="bg-white/20 backdrop-blur-sm p-5 rounded-lg mb-6 border border-white/10">
                         <ul class="space-y-3">
                             <li class="flex items-center">
                                 <i class="fas fa-check-circle text-blue-light mr-3 text-lg"></i>
-                                <span class="text-white font-medium">Günstige Werbemöglichkeiten ab 49€</span>
+                                <span class="text-white font-medium">Verschiedene Anzeigenformate ab 49€</span>
                             </li>
                             <li class="flex items-center">
                                 <i class="fas fa-check-circle text-blue-light mr-3 text-lg"></i>
@@ -1141,9 +1135,9 @@
                         </ul>
                     </div>
                     
-                    <a href="#" class="px-7 py-3.5 bg-blue-light text-blue-dark rounded-lg font-semibold hover:bg-white transition-all duration-300 flex items-center justify-center shadow-lg shadow-blue-dark/20 text-lg">
-                        <i class="fas fa-handshake mr-2"></i>
-                        <span>Partner werden</span>
+                    <a href="./pages/kontakt/index.html#ad-form" class="px-7 py-3.5 bg-blue-light text-blue-dark rounded-lg font-semibold hover:bg-white transition-all duration-300 flex items-center justify-center shadow-lg shadow-blue-dark/20 text-lg">
+                        <i class="fas fa-ad mr-2"></i>
+                        <span>Anzeige schalten</span>
                     </a>
                 </div>
             </div>
@@ -1453,8 +1447,231 @@
         <i class="fas fa-chevron-up text-xs"></i>
     </a>
 
+    <!-- Event Detail Modal -->
+    <div id="eventDetailModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <!-- Backdrop with blur effect -->
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" id="modalBackdrop"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden transform transition-all relative z-10 scale-95 opacity-0" id="modalContent">
+            <!-- Close button -->
+            <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-700 hover:text-gray-900 z-20 bg-white/70 hover:bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-sm">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            
+            <!-- Event category indicator (top bar) -->
+            <div id="eventModalCategory" class="h-2 bg-blue-medium w-full"></div>
+            
+            <!-- Event image -->
+            <div class="relative">
+                <img id="eventModalImage" src="Bilder/Stock_images/mitarbeiter-die-zusammenarbeiten-seitenansicht.jpg" alt="Event" class="w-full h-48 object-cover">
+                <div id="eventModalCategoryBadge" class="absolute top-3 left-3 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm">
+                    Kategorie
+                </div>
+            </div>
+            
+            <!-- Event content -->
+            <div class="p-6">
+                <div class="flex items-center text-gray-500 mb-3 text-sm">
+                    <i class="fas fa-calendar-day mr-2 text-blue-medium"></i>
+                    <span id="eventModalDate">15. August 2025 • 18:00 Uhr</span>
+                </div>
+                
+                <h3 id="eventModalTitle" class="text-xl font-bold text-gray-800 mb-3">Ereignis-Titel</h3>
+                
+                <p id="eventModalDescription" class="text-gray-600 mb-4">
+                    Ausführliche Beschreibung des Ereignisses wird hier angezeigt.
+                </p>
+                
+                <div class="flex items-center text-gray-500 text-sm mb-3">
+                    <i class="fas fa-map-marker-alt mr-2 text-blue-medium"></i>
+                    <span id="eventModalLocation">Veranstaltungsort</span>
+                </div>
+                
+                <div class="flex items-center text-gray-500 text-sm">
+                    <i class="fas fa-user mr-2 text-blue-medium"></i>
+                    <span id="eventModalOrganizer">Veranstalter</span>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="flex justify-between mt-6">
+                    <a id="eventModalShare" href="#" class="text-blue-medium hover:text-blue-dark flex items-center">
+                        <i class="fas fa-share-alt mr-1"></i>
+                        Teilen
+                    </a>
+                    <a id="eventModalCalendar" href="#" class="bg-blue-medium text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition-colors">
+                        <i class="fas fa-calendar-plus mr-1"></i>
+                        Zum Kalender hinzufügen
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Neues Kalender-Skript einbinden -->
     <script src="calendar.js"></script>
     <script src="script.js"></script>
+    
+    <!-- Event Modal Funktionalität -->
+    <script>
+        // Event Modal Setup
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventModal();
+        });
+        
+        function setupEventModal() {
+            // Schließen-Button des Modals
+            const closeBtn = document.getElementById('closeModalBtn');
+            const modalBackdrop = document.getElementById('modalBackdrop');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeEventModal);
+            }
+            
+            if (modalBackdrop) {
+                modalBackdrop.addEventListener('click', closeEventModal);
+            }
+            
+            // ESC-Taste zum Schließen
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeEventModal();
+                }
+            });
+        }
+        
+        // Event Detail Modal öffnen
+        function openEventDetail(eventId) {
+            // Finde das Event anhand der ID
+            const event = findEventById(eventId);
+            if (!event) return;
+            
+            // Event-Details im Modal anzeigen
+            updateEventModal(event);
+            
+            // Modal anzeigen mit Animation
+            const modal = document.getElementById('eventDetailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.remove('hidden');
+            // Kurze Verzögerung für Animation
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 50);
+            
+            // Scroll verhindern
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Event anhand der ID finden
+        function findEventById(eventId) {
+            const events = window.calendarEvents || [];
+            return events.find(event => event.id === eventId);
+        }
+        
+        // Modal mit Event-Daten aktualisieren
+        function updateEventModal(event) {
+            // Datumsformatierung
+            const eventDate = new Date(event.date);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = eventDate.toLocaleDateString('de-DE', options);
+            const formattedTime = `${eventDate.getHours().toString().padStart(2, '0')}:${eventDate.getMinutes().toString().padStart(2, '0')} Uhr`;
+            
+            // Kategorie-Info
+            let categoryColor = 'gray-500';
+            const category = event.category.toLowerCase();
+            
+            if (category === 'politik') {
+                categoryColor = 'purple-600';
+            } else if (category === 'sport') {
+                categoryColor = 'green-500';
+            } else if (category === 'kultur') {
+                categoryColor = 'orange-500';
+            }
+            
+            // Modal-Elemente aktualisieren
+            document.getElementById('eventModalTitle').textContent = event.title;
+            document.getElementById('eventModalDescription').textContent = event.description;
+            document.getElementById('eventModalDate').textContent = `${formattedDate} • ${formattedTime}`;
+            document.getElementById('eventModalLocation').textContent = event.location;
+            document.getElementById('eventModalOrganizer').textContent = event.organizer || 'Gemeinde Quierschied';
+            
+            // Kategorie-Farbcodierung
+            document.getElementById('eventModalCategory').className = `h-2 bg-${categoryColor} w-full`;
+            
+            const categoryBadge = document.getElementById('eventModalCategoryBadge');
+            categoryBadge.className = `absolute top-3 right-3 bg-${categoryColor} text-white text-xs font-bold px-2 py-1 rounded-full`;
+            categoryBadge.textContent = event.category.charAt(0).toUpperCase() + event.category.slice(1);
+            
+            // Bild je nach Kategorie und Ereignis-Typ
+            let showImage = true;
+            let imagePath = 'Bilder/Stock_images/mitarbeiter-die-zusammenarbeiten-seitenansicht.jpg';
+            
+            // Prüfen, ob dieses Ereignis ein Bild haben soll (75% der Ereignisse haben Bilder)
+            if (event.hasOwnProperty('showImage') && event.showImage === false) {
+                showImage = false;
+            } else {
+                if (category === 'sport') {
+                    imagePath = 'Bilder/2025/asugabe4.jpg';
+                } else if (category === 'kultur') {
+                    imagePath = 'Bilder/2025/ausgabe3.jpg';
+                } else if (category === 'politik') {
+                    imagePath = 'Bilder/2025/asugabe5.jpg';
+                }
+            }
+            
+            // Bild-Container anzeigen oder verstecken
+            const imageContainer = document.querySelector('#eventDetailModal .relative:has(#eventModalImage)');
+            if (imageContainer) {
+                if (showImage) {
+                    imageContainer.style.display = 'block';
+                    document.getElementById('eventModalImage').src = imagePath;
+                } else {
+                    imageContainer.style.display = 'none';
+                }
+            }
+            
+            // Share-Link aktualisieren
+            const shareLink = document.getElementById('eventModalShare');
+            shareLink.onclick = function(e) {
+                e.preventDefault();
+                if (navigator.share) {
+                    navigator.share({
+                        title: event.title,
+                        text: `${event.title} - ${formattedDate}, ${formattedTime} in ${event.location}`,
+                        url: window.location.href
+                    }).catch(console.error);
+                } else {
+                    // Fallback für Browser ohne Web Share API
+                    alert('Teilen-Funktion in diesem Browser nicht verfügbar.');
+                }
+            };
+            
+            // Kalender-Link aktualisieren
+            const calendarLink = document.getElementById('eventModalCalendar');
+            const startTime = new Date(event.date).toISOString().replace(/-|:|\.\d+/g, '');
+            const endTime = new Date(new Date(event.date).getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
+            
+            const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}&dates=${startTime}/${endTime}`;
+            calendarLink.href = calendarUrl;
+            calendarLink.target = '_blank';
+        }
+        
+        // Modal schließen
+        function closeEventModal() {
+            const modal = document.getElementById('eventDetailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            // Kurze Verzögerung für Animation
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+    </script>
 </body>
 </html>
